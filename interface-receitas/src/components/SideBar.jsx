@@ -1,12 +1,10 @@
 // import soup_kitchen from '../assets/soup_kitchen.png';
 import sopa3 from '../assets/sopa3.png';
 import add_coment from '../assets/add_coment.png';
-import bookmark from '../assets/bookmark.png';
-import history from '../assets/history.png';
+import logout from '../assets/logout.png';
 
 
-
-const SideBar = ({ conversas, conversaAtualId, onNovaConversa, onSelecionarConversa, onDeletarConversa }) => {
+const SideBar = ({ conversas, conversaAtualId, onNovaConversa, onSelecionarConversa, onDeletarConversa, onLogout }) => {
     return (
         <aside className="flex h-full w-64 flex-col bg-white border-r border-[#e9ecef] ">
             <div className='flex p-3 mb-5 gap-3'>
@@ -60,6 +58,15 @@ const SideBar = ({ conversas, conversaAtualId, onNovaConversa, onSelecionarConve
                     </ul>
                 </div>
             </nav>
+            <div className='mt-auto p-3 border-t border-[#e9ecef]'>
+                <button 
+                    onClick={onLogout} 
+                    className='group flex items-center gap-3 w-full p-2 rounded-md text-gray-700 hover:bg-red-50 hover:text-red-600 transition-colors duration-200 cursor-pointer'
+                >
+                    <img src={logout} alt="" className='w-5 h-5 opacity-70 group-hover:opacity-100' />
+                    <span className="font-medium">Sair</span>
+                </button>
+            </div>
         </aside>
     );
 }

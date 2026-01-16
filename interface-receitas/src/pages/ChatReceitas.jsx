@@ -3,6 +3,7 @@ import ListaMensagens from "../components/ListaMensagens";
 import ChatBox from "../components/ChatBox";
 import SideBar from "../components/SideBar";
 import {perguntarReceita} from '../services/api';
+import { useNavigate } from "react-router";
 
 const MENSAGEM_INICIAL = {
   id: 1,
@@ -21,6 +22,8 @@ const ChatReceitas = () => {
   const [conversas, setConversas] = useState([]);
   const [conversaAtualId, setConversaAtualId] = useState(null);
   const [processing, setProcessing] = useState(false);
+
+  const navigate = useNavigate();
 
   // Carregar conversas do localStorage na inicialização
   useEffect(() => {
@@ -128,6 +131,11 @@ const ChatReceitas = () => {
   const conversaAtual = conversas.find((c) => c.id === conversaAtualId);
   const mensagensAtuais = conversaAtual ? conversaAtual.mensagens : [];
 
+  const handleLogout = () => {
+    localStorage.removeItem("userToken");
+    navigate("/login");
+  }
+
   return (
     <div className="flex h-screen bg-[#F8F9FAff] font-sans">
       <SideBar
@@ -136,6 +144,7 @@ const ChatReceitas = () => {
         onNovaConversa={handleNovaConversa}
         onSelecionarConversa={handleSelecionarConversa}
         onDeletarConversa={handleDeletarConversa}
+        onLogout={handleLogout}
       />
 
         {/* Área de Conteúdo Principal */}
