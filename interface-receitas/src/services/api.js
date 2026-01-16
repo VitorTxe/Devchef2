@@ -3,7 +3,6 @@ import axios from "axios";
 const API_URL = import.meta.env.VITE_API_URL;
 
 // Cria uma instância do Axios. Usaremos esta instância para todas as chamadas.
-// Adicionamos o prefixo /api/receitas diretamente na baseURL.
 const apiClient = axios.create({
   baseURL: `${API_URL}/api/receitas`,
 });
@@ -64,6 +63,5 @@ export const cadastrarUsuario = async (dadosUsuario) => {
 
 export const loginUsuario = async (dadosLogin) => {
   const response = await apiClient.post("login", dadosLogin);
-  console.log(response.data);
   return response.data;
 };

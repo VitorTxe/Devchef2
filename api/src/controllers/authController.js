@@ -79,9 +79,9 @@ export const usuario = async (req, res) => {
 
     try {
         users = await prisma.user.findMany({
-            where : {
-                usuario: req.query.usuario,
-                password: req.query.password
+            select : {
+                id: true,
+                usuario: true
             }
         })
     } catch (error) {

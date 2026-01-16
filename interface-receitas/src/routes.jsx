@@ -22,9 +22,9 @@ const router = createBrowserRouter([
             {
                 path: "chat-receitas",
                 element: (
-                    // <ProtectedRoute>
+                    <ProtectedRoute>
                         <ChatReceitas />
-                    // </ProtectedRoute>
+                    </ProtectedRoute>
                 )
             },
             {

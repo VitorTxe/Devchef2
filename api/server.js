@@ -4,12 +4,11 @@ import cors from 'cors';
 import helmet from 'helmet';
 
 const app = express();
-// A porta é fornecida pela Render via variável de ambiente.
-// Usamos 3001 como padrão para o ambiente local.
+
 const port = process.env.PORT || 3001;
 
 app.use(cors())
-
+// helmet ajuda a proteger o servidor, porque ajuda a proteger contra ataques de hackers
 app.use(helmet());
 
 app.use(express.json())

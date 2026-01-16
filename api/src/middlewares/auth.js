@@ -13,7 +13,6 @@ export default function authMiddleware(req, res, next) {
     try {
         const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
-        // O payload do token foi criado com 'userId', então usamos 'decoded.userId'
         req.userId = decoded.userId;
         req.userUsuario = decoded.usuario;
 
