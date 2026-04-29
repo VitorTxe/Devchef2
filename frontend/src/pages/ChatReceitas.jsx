@@ -7,7 +7,7 @@ import { useNavigate } from "react-router";
 
 const MENSAGEM_INICIAL = {
   id: 1,
-  texto: "Olá! Sou o DevChef. Quais ingredientes você tem hoje? Me diga e eu criarei uma receita para você!",
+  texto: "Olá! Sou o ChefIA. Quais ingredientes você tem hoje? Me diga e eu criarei uma receita para você!",
   remetente: "bot",
 };
 
@@ -22,6 +22,7 @@ const ChatReceitas = () => {
   const [conversas, setConversas] = useState([]);
   const [conversaAtualId, setConversaAtualId] = useState(null);
   const [processing, setProcessing] = useState(false);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
   const navigate = useNavigate();
 
@@ -40,7 +41,7 @@ const ChatReceitas = () => {
     }
   }, []);
 
-  // Salvar conversas no localStorage sempre que forem alteradas
+  // Salva conversas no localStorage sempre que forem alteradas
   useEffect(() => {
     if (conversas.length > 0) {
       localStorage.setItem("chat_conversas", JSON.stringify(conversas));
@@ -52,6 +53,7 @@ const ChatReceitas = () => {
   }, [conversas]);
 
   const handleNovaConversa = () => {
+    debugger
     const novaConversa = criarNovaConversa();
     setConversas([novaConversa, ...conversas]);
     setConversaAtualId(novaConversa.id);
@@ -137,22 +139,43 @@ const ChatReceitas = () => {
   }
 
   return (
-    <div className="flex h-screen bg-[#F8F9FAff] font-sans">
+    <div className="flex h-screen overflow-hidden bg-[#F8F9FAff] font-sans">
+      {/* Overlay escuro para mobile quando a sidebar estiver aberta */}
+      {isSidebarOpen && (
+        <div 
+          className="fixed inset-0 bg-black bg-opacity-50 z-40 md:hidden"
+          onClick={() => setIsSidebarOpen(false)}
+        />
+      )}
+
       <SideBar
         conversas={conversas}
         conversaAtualId={conversaAtualId}
         onNovaConversa={handleNovaConversa}
-        onSelecionarConversa={handleSelecionarConversa}
+        onSelecionarConversa={(id) => {
+          handleSelecionarConversa(id);
+          setIsSidebarOpen(false); // Fecha a sidebar no mobile ao selecionar
+        }}
         onDeletarConversa={handleDeletarConversa}
         onLogout={handleLogout}
+        isOpen={isSidebarOpen}
+        onClose={() => setIsSidebarOpen(false)}
       />
 
         {/* Área de Conteúdo Principal */}
-        <main className="flex-1 flex flex-col">
-          <header className=" flex flex-wrap  justify-between border-b border-[#e4e6e9]">
-            <div className="flex flex-col p-4">
+        <main className="flex-1 flex flex-col w-full">
+          <header className="flex flex-row items-center border-b border-[#e4e6e9] p-4">
+            <button 
+              className="md:hidden mr-4 p-2 text-gray-600 hover:bg-gray-100 rounded-md focus:outline-none"
+              onClick={() => setIsSidebarOpen(true)}
+            >
+              <svg className="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16M4 18h16"></path>
+              </svg>
+            </button>
+            <div className="flex flex-col">
               <h1 className="text-2xl text-black leading-normal font-mono font-bold min-w-72 ">
-                DevChef Chat
+                ChefIA Chat
               </h1>
               <p className="text-gray-600 text-lg">
                 Seu assistente pessoal de receitas com IA. O que você tem na geladeira hoje?

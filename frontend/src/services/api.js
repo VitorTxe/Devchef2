@@ -30,17 +30,19 @@ apiClient.interceptors.response.use(
     if (error.response && error.response.status === 401) {
       console.error("Sessão expirada ou inválida. Redirecionando para o login.");
       localStorage.removeItem("userToken");
-      // Força o redirecionamento para a página de login
       window.location.href = "/login";
+      // Lida com erros de rate limit (muitas requisições)
+    } else if (error.response && error.response.status === 429) {
+      console.error("Muitas requisições. Limite de taxa atingido.");
+      alert("Você atingiu o limite de requisições. Por favor, tente novamente em alguns minutos.");
     }
     return Promise.reject(error);
   }
 );
 
-// Renomeamos a função 'api' para 'perguntarReceita' para maior clareza
+
 export const perguntarReceita = async (pergunta) => {
   try {
-    // Agora usamos a instância 'apiClient' que já tem o interceptor
     const response = await apiClient.post("perguntar", { pergunta });
     return response.data.resposta;
 

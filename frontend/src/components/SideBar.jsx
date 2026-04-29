@@ -1,21 +1,29 @@
-// import soup_kitchen from '../assets/soup_kitchen.png';
 import sopa3 from '../assets/sopa3.png';
 import add_coment from '../assets/add_coment.png';
 import logout from '../assets/logout.png';
 
 
-const SideBar = ({ conversas, conversaAtualId, onNovaConversa, onSelecionarConversa, onDeletarConversa, onLogout }) => {
+const SideBar = ({ conversas, conversaAtualId, onNovaConversa, onSelecionarConversa, onDeletarConversa, onLogout, isOpen, onClose }) => {
     return (
-        <aside className="flex h-full w-64 flex-col bg-white border-r border-[#e9ecef] ">
-            <div className='flex p-3 mb-5 gap-3'>
-                <div className='flex items-center justify-center'>
-                    <img src={sopa3} className=' w-12 h-10 p-1 text-black bg-[#FF6B00ff] rounded-full'/>
+        <aside className={`fixed z-50 md:static flex h-full w-64 flex-col bg-white border-r border-[#e9ecef] transition-transform duration-300 ease-in-out ${isOpen ? "translate-x-0" : "-translate-x-full"} md:translate-x-0`}>
+            <div className='flex justify-between items-center p-3 mb-5'>
+                <div className='flex gap-3'>
+                    <div className='flex items-center justify-center'>
+                        <img src={sopa3} className=' w-12 h-10 p-1 text-black bg-[#FF6B00ff] rounded-full'/>
+                    </div>
+                    {/* <img src={sopa3} alt="Logo DevChef" className="mr-4 w-12 h-12 self-center rounded-4xl bg-[#FF6B00ff] p-2" /> */}
+                    <div className='flex flex-col'>
+                        <h2 className="text-lg font-bold font-mono leading-normal" >ChefIA</h2>
+                        <p className=' text-[#a6a4a3e7] font-mono text-sm'>Assistente de receitas</p>
+                    </div>              
                 </div>
-                {/* <img src={sopa3} alt="Logo DevChef" className="mr-4 w-12 h-12 self-center rounded-4xl bg-[#FF6B00ff] p-2" /> */}
-                <div className='flex flex-col'>
-                    <h2 className="text-lg font-bold font-mono leading-normal" >DevChef</h2>
-                    <p className=' text-[#a6a4a3e7] font-mono text-sm'>Assistente de receitas com IA</p>
-                </div>              
+                {/* Botão X para fechar a sidebar no mobile */}
+                <button 
+                    onClick={onClose}
+                    className="md:hidden p-1 text-gray-500 hover:bg-gray-100 rounded-md focus:outline-none"
+                >
+                    <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                </button>
             </div>
 
             <nav >
