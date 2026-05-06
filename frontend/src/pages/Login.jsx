@@ -28,11 +28,11 @@ const Login = () => {
 
             const response = await loginUsuario(dadosLogin);
             
-            // 1. Pega o token da resposta da API (response já é o objeto de dados)
+            // Pega o token da resposta da API
             const { token, message } = response;
 
             if (token) {
-                // 2. SALVA O TOKEN NO LOCALSTORAGE!
+                // SALVA O TOKEN NO LOCALSTORAGE!
                 localStorage.setItem('userToken', token);
                 setSuccess(message || "Login bem-sucedido!");
                 

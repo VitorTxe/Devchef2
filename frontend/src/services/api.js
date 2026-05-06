@@ -4,7 +4,7 @@ const API_URL = import.meta.env.VITE_API_URL;
 
 // Cria uma instância do Axios. Usaremos esta instância para todas as chamadas.
 const apiClient = axios.create({
-  baseURL: `${API_URL}/api/receitas`,
+  baseURL: `${API_URL}/api`,
 });
 
 // Interceptor de Requisição: Adiciona o token JWT em todas as chamadas para a API.
@@ -43,7 +43,7 @@ apiClient.interceptors.response.use(
 
 export const perguntarReceita = async (pergunta) => {
   try {
-    const response = await apiClient.post("perguntar", { pergunta });
+    const response = await apiClient.post("/receitas/perguntar", { pergunta });
     return response.data.resposta;
 
   } catch (error) {
@@ -54,7 +54,7 @@ export const perguntarReceita = async (pergunta) => {
 
 export const cadastrarUsuario = async (dadosUsuario) => {
   try {
-    const response = await apiClient.post("cadastrar", dadosUsuario);
+    const response = await apiClient.post("/auth/cadastrar", dadosUsuario);
     return response.data;
 
   } catch (error) {
@@ -64,6 +64,6 @@ export const cadastrarUsuario = async (dadosUsuario) => {
 };
 
 export const loginUsuario = async (dadosLogin) => {
-  const response = await apiClient.post("login", dadosLogin);
+  const response = await apiClient.post("/auth/login", dadosLogin);
   return response.data;
 };

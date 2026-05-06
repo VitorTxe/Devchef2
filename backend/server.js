@@ -1,5 +1,6 @@
 import express from "express";
 import receitasRoutes from './src/routes/receitas.route.js'
+import authRoutes from './src/routes/auth.route.js'
 import cors from 'cors';
 import helmet from 'helmet';
 import rateLimit from 'express-rate-limit';
@@ -9,9 +10,9 @@ const app = express();
 const port = process.env.PORT || 3001;
 
 const corsOptions = {
-    origin: ['http://localhost:5173', process.env.FRONTEND_URL],
+    origin: [process.env.FRONTEND_URL, 'http://localhost:5173'],
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
-    credentials: true
+    allowedHeaders: ['Content-Type', 'authorization']
 }
 
 app.use(cors(corsOptions))
@@ -35,6 +36,7 @@ app.use(express.json())
 // helmet ajuda a proteger o servidor contra ataques XSS e clickjacking
 app.use(helmet());
 
+app.use('/api/auth', authRoutes)
 app.use('/api/receitas', receitasRoutes)
 
 app.listen(port, () => {
