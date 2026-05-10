@@ -23,27 +23,14 @@ const Login = () => {
         try {
             const dadosLogin = { usuario: username, password: password };
 
-            // Adiciona um delay artificial de 1.5s para o usuário perceber o carregamento
-            await new Promise(resolve => setTimeout(resolve, 1500));
+            const [response] = await Promise.all([
+                loginUsuario(dadosLogin), 
+                new Promise((resolve) => setTimeout(resolve, 800))])
 
-            const response = await loginUsuario(dadosLogin);
-            
-            // Pega o token da resposta da API
-            const { token, message } = response;
-
-            if (token) {
-                // SALVA O TOKEN NO LOCALSTORAGE!
-                localStorage.setItem('userToken', token);
-                setSuccess(message || "Login bem-sucedido!");
-                
-                setTimeout(() => {
+            setSuccess(response.message || "Login bem-sucedido!");
+            setTimeout(() => {
                 navigate('/chat-receitas');
             }, 2000)
-
-
-            } else {
-                setError('Não foi possível obter o token de autenticação.');
-            }
             
         } catch (err) {
             // Exibe a mensagem de erro vinda da API ("Usuário ou senha inválidos.")
@@ -99,7 +86,7 @@ const Login = () => {
             {success && <p className="text-sm text-center text-green-500">{success}</p>}
             <p className="text-sm text-center text-gray-600">
                 Não tem uma conta?{' '}
-                <button type="button" onClick={() => navigate('/criar-conta')} className="font-medium text-blue-500 hover:underline">Crie uma</button>
+                <button type="button" onClick={() => navigate('/criar-conta')} className="font-medium text-blue-500 hover:underline">Criar conta</button>
             </p>
         </form>
     </div>    

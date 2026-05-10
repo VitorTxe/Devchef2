@@ -70,8 +70,15 @@ export const loginUsuario = async (req, res) => {
             { expiresIn: "300s" }
         );
 
-        // Se tudo estiver correto, retorna sucesso (sem a senha)
-        return res.status(200).json({ message: "Login bem-sucedido!", token });
+        // Se tudo estiver correto, envia o token como cookie HttpOnly
+        res.cookie('token', token, {
+            httpOnly: true,   // Impede acesso via JavaScript (protége contra XSS)
+            secure: process.env.NODE_ENV === 'production', // Apenas HTTPS em produção
+            sameSite: 'strict', // Protege contra ataques CSRF
+            maxAge: 300000    // 5 minutos em milissegundos
+        });
+
+        return res.status(200).json({ message: "Login bem-sucedido!" });
     } catch (error) {
         console.error("Erro ao fazer login:", error);
         return res.status(500).json({ error: "Ocorreu um erro interno ao fazer login." });
@@ -92,5 +99,10 @@ export const usuario = async (req, res) => {
         console.log(error)
     }
     res.status(200).json(users)
-
 }
+
+// Rota usada pelo frontend para verificar se a sessão ainda é válida
+// O authMiddleware já valida o cookie. Se chegar aqui, o usuário está autenticado.
+export const verificarSessao = (req, res) => {
+    res.status(200).json({ autenticado: true, usuario: req.userUsuario });
+};
